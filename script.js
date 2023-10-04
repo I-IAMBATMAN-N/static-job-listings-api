@@ -153,7 +153,7 @@ const initialJobs = [
   },
 ];
 
-let jobs = initialJobs.map((job) => ({ ...job, active: false }));
+let jobs = [];
 
 const listedJobs = document.querySelector(".listed-jobs");
 const featuredTechs = document.querySelector(".featured-techs");
@@ -403,8 +403,29 @@ function displayJobs() {
 // ************************************************************************
 // SHOW ALL JOBS AFTER WINDOW IS LOADED
 window.addEventListener("load", function () {
-  console.log("DOCUMENT LOADED");
-  displayJobs();
+  // console.log("DOCUMENT LOADED");
+
+  console.log("FETCHING");
+  const getJobs = async () => {
+    const res = await fetch("http://127.0.0.1:4000/api/v1/");
+    const data = res.json();
+
+    return data;
+  };
+
+  getJobs().then((data) => {
+    //
+    const final = JSON.parse(data.data);
+
+    jobs = final.map((job) => ({ ...job, active: false }));
+
+    console.log("jobs", jobs);
+
+    displayJobs();
+
+    // console.log("data.data", final);
+  });
+
   const jobItems = document.querySelectorAll(".listed-job");
 
   jobItems.forEach((item) => {
