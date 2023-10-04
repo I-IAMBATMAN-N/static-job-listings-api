@@ -225,7 +225,7 @@ function fillKeywords() {
   });
   const crossButtons = document.querySelectorAll(".clear-cross");
   crossButtons.forEach((button) => {
-    button.addEventListener("click", function (e) {
+    button.addEventListener("click", (e) => {
       if (keyWordArray.length > 1) {
         let arr1 = keyWordArray.slice(
           0,
@@ -257,6 +257,34 @@ function fillKeywords() {
         fillKeywords();
         displayJobs();
       }
+      //
+      let str = "";
+
+      keyWordArray.forEach((keyword, index) => {
+        if (index !== 0) str += "-";
+        str += keyword;
+      });
+
+      console.log("str before fetch", str);
+
+      const getJobs = async () => {
+        const res = await fetch(`http://127.0.0.1:4000/api/v1/${str}`);
+        const data = res.json();
+
+        console.log("actually fetching");
+        return data;
+      };
+
+      getJobs().then((data) => {
+        //
+        console.log("then fetching");
+        console.log("filter delete", data.data);
+
+        jobs = data.data;
+        displayJobs();
+      });
+
+      console.log("keywords string", str);
     });
   });
   //
@@ -415,7 +443,7 @@ window.addEventListener("load", function () {
 
   getJobs().then((data) => {
     //
-    const final = JSON.parse(data.data);
+    const final = data.data;
 
     jobs = final.map((job) => ({ ...job, active: false }));
 
@@ -451,8 +479,29 @@ window.addEventListener("load", function () {
   });
 });
 // HEADER INPUT EVENT LISTENNER
+//
+let str = "";
+
 headerInput.addEventListener("keydown", function (e) {
   if (e.key === " " || e.key === "Enter") {
+    if (str.length) str += "-";
+    str += headerInput.value;
+
+    console.log("str", str);
+
+    const getFilteredJobs = async () => {
+      const res = await fetch(`http://127.0.0.1:4000/api/v1/${str}`);
+      const data = res.json();
+
+      return data;
+    };
+
+    getFilteredJobs().then((data) => {
+      console.log("data.data", data.data);
+
+      jobs = data.data;
+    });
+
     keyWordArray.push(headerInput.value);
     fillKeywords();
     displayJobs();
@@ -465,5 +514,19 @@ btnClear.addEventListener("click", (e) => {
   console.log(e.target);
   keyWordArray = [];
   keywordContainer.innerHTML = "";
-  displayJobs();
+
+  const getJobs = async () => {
+    const res = await fetch(`http://127.0.0.1:4000/api/v1/`);
+    const data = res.json();
+
+    return data;
+  };
+
+  getJobs().then((data) => {
+    // console.log("data.data", data.data);
+
+    jobs = data.data;
+    displayJobs();
+  });
+  //
 });
