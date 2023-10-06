@@ -4,7 +4,6 @@
 * Autoprefixer: v10.4.7
 * Browsers: last 4 version
 */
-
 * {
   padding: 0;
   margin: 0;
@@ -16,7 +15,7 @@ html {
 }
 body {
   background-color: hsl(180, 52%, 96%);
-  font-family: "League Spartan";
+  font-family: "League Spartan", sans-serif;
   color: hsl(180, 29%, 50%);
   display: -webkit-box;
   display: -ms-flexbox;
