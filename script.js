@@ -160,7 +160,7 @@ const featuredTechs = document.querySelector(".featured-techs");
 
 let keyWordArray = [];
 
-console.log(listedJobs);
+// console.log(listedJobs);
 
 const jobHTML = function (object) {
   // display job features
@@ -249,7 +249,7 @@ function fillKeywords() {
         arr2.forEach((e) => {
           keyWordArray.push(e);
         });
-        console.log("keyWordArray", keyWordArray);
+        // console.log("keyWordArray", keyWordArray);
         fillKeywords();
         displayJobs();
       } else if (keyWordArray.length === 1) {
@@ -265,26 +265,28 @@ function fillKeywords() {
         str += keyword;
       });
 
-      console.log("str before fetch", str);
+      // console.log("str before fetch", str);
 
       const getJobs = async () => {
-        const res = await fetch(`http://127.0.0.1:4000/api/v1/${str}`);
+        const res = await fetch(
+          `https://jb-fm-api.netlify.app/api/jobs/${str}`
+        );
         const data = res.json();
 
-        console.log("actually fetching");
+        // console.log("actually fetching");
         return data;
       };
 
       getJobs().then((data) => {
         //
-        console.log("then fetching");
-        console.log("filter delete", data.data);
+        // console.log("then fetching");
+        // console.log("filter delete", data.data);
 
         jobs = data.data;
         displayJobs();
       });
 
-      console.log("keywords string", str);
+      // console.log("keywords string", str);
     });
   });
   //
@@ -295,7 +297,7 @@ function displayJobs() {
   filteredArray = [];
   function checkRoleAndLevel(job) {
     if (keyWordArray.length === 1) {
-      console.log("keyWordArray", keyWordArray);
+      // console.log("keyWordArray", keyWordArray);
       // if (job.role.toLowerCase() === keyWordArray[0].toLowerCase()) {
       //   //
       //   // console.log("job.role", job.role);
@@ -364,7 +366,7 @@ function displayJobs() {
         filteredArray = [];
         //
         keyWordArray.forEach((keyword) => {
-          console.log("keyword checking");
+          // console.log("keyword checking");
           if (array[0].toLowercase() === keyword.toLowercase()) {
             filteredArray.push(job);
           }
@@ -378,7 +380,7 @@ function displayJobs() {
         // //
         if (keyWordArray.length === 1) {
           if (keyWordArray[0].toLowerCase() === arrItem.toLowerCase()) {
-            console.log(true);
+            // console.log(true);
             filteredArray.push(job);
           }
         }
@@ -407,7 +409,7 @@ function displayJobs() {
   //
   //
   if (keyWordArray.length > 0) {
-    console.log("keywordarray", keyWordArray[0]);
+    // console.log("keywordarray", keyWordArray[0]);
   }
   listedJobs.innerHTML = "";
   jobs.forEach((job) => {
@@ -433,9 +435,9 @@ function displayJobs() {
 window.addEventListener("load", function () {
   // console.log("DOCUMENT LOADED");
 
-  console.log("FETCHING");
+  // console.log("FETCHING");
   const getJobs = async () => {
-    const res = await fetch("http://127.0.0.1:4000/api/v1/");
+    const res = await fetch("https://jb-fm-api.netlify.app/api/jobs/");
     const data = res.json();
 
     return data;
@@ -447,7 +449,7 @@ window.addEventListener("load", function () {
 
     jobs = final.map((job) => ({ ...job, active: false }));
 
-    console.log("jobs", jobs);
+    // console.log("jobs", jobs);
 
     displayJobs();
 
@@ -469,10 +471,10 @@ window.addEventListener("load", function () {
           ? { ...job, active: job.active === false ? true : false }
           : { ...job }
       );
-      console.log(
-        "changed jobs",
-        jobs.map((job) => job.active)
-      );
+      // console.log(
+      //   "changed jobs",
+      //   jobs.map((job) => job.active)
+      // );
       // displayJobs();
     });
     // displayJobs();
@@ -487,17 +489,17 @@ headerInput.addEventListener("keydown", function (e) {
     if (str.length) str += "-";
     str += headerInput.value;
 
-    console.log("str", str);
+    // console.log("str", str);
 
     const getFilteredJobs = async () => {
-      const res = await fetch(`http://127.0.0.1:4000/api/v1/${str}`);
+      const res = await fetch(`https://jb-fm-api.netlify.app/api/jobs/${str}`);
       const data = res.json();
 
       return data;
     };
 
     getFilteredJobs().then((data) => {
-      console.log("data.data", data.data);
+      // console.log("data.data", data.data);
 
       jobs = data.data;
     });
@@ -511,12 +513,12 @@ headerInput.addEventListener("keydown", function (e) {
 });
 // HEADER INPUT CLEAR BUTTON EVENT LISTENNER
 btnClear.addEventListener("click", (e) => {
-  console.log(e.target);
+  // console.log(e.target);
   keyWordArray = [];
   keywordContainer.innerHTML = "";
 
   const getJobs = async () => {
-    const res = await fetch(`http://127.0.0.1:4000/api/v1/`);
+    const res = await fetch(`http://jb-fm-api.netlify.app/api/jobs/`);
     const data = res.json();
 
     return data;
@@ -524,7 +526,6 @@ btnClear.addEventListener("click", (e) => {
 
   getJobs().then((data) => {
     // console.log("data.data", data.data);
-
     jobs = data.data;
     displayJobs();
   });
